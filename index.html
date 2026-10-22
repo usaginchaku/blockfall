@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#101114">
+    <meta name="description" content="ブラウザで遊べる落ちものパズル。キーボード・タッチ操作対応。">
+    <title>Blockfall</title>
+    <link rel="icon" type="image/svg+xml" href="./favicon.svg">
+    <link rel="stylesheet" href="./styles.css">
+    <script type="module" src="./app.js"></script>
+  </head>
+  <body>
+    <div class="game-app">
+      <header class="toolbar">
+        <h1>blockfall</h1>
+        <div class="toolbar-actions">
+          <button id="pause-button" class="icon-button" type="button" aria-label="一時停止・再開" title="一時停止・再開 (P)" disabled>
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14M16 5v14"/></svg><span class="sr-only">一時停止</span>
+          </button>
+          <button id="sound-button" class="icon-button" type="button" aria-label="サウンドをオンにする" aria-pressed="false" title="サウンド">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4V5Z"/><path class="sound-off" d="m16 9 6 6m0-6-6 6"/><path class="sound-on" d="M15 8a6 6 0 0 1 0 8m3-11a10 10 0 0 1 0 14"/></svg>
+          </button>
+          <button id="help-button" class="icon-button" type="button" aria-label="操作方法" title="操作方法"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M9.7 9a2.4 2.4 0 1 1 3.8 2c-1.1.6-1.5 1.1-1.5 2.5M12 17h.01"/></svg></button>
+        </div>
+      </header>
+      <main>
+        <section class="stats" aria-label="スコア">
+          <div class="score-stat"><span>スコア</span><strong id="score">0</strong></div>
+          <div><span>ベスト</span><strong id="best-score">0</strong></div>
+          <div><span>レベル</span><strong id="level">1</strong></div>
+          <div><span>ライン</span><strong id="lines">0</strong></div>
+        </section>
+        <section class="game-layout" aria-label="落ちものパズル">
+          <div id="board-shell" class="board-shell">
+            <canvas id="board" width="300" height="600" tabindex="0" aria-label="ゲーム盤面。矢印キーで移動と回転、スペースで一気に落下。">Canvas 対応ブラウザが必要です。</canvas>
+            <div id="board-toast" class="board-toast" aria-hidden="true"></div>
+            <div id="game-overlay" class="game-overlay">
+              <h2 id="overlay-title" hidden></h2>
+              <p id="overlay-description" hidden></p>
+              <button id="start-button" class="primary-button" type="button" title="Enter"><span>開始</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg></button>
+            </div>
+          </div>
+          <aside class="piece-sidebar">
+            <section class="hold-card"><h2>ホールド <kbd>C</kbd></h2><canvas id="hold" width="144" height="80" aria-label="ホールド中のブロック"></canvas></section>
+            <section class="next-card"><h2>次</h2><canvas id="next" width="144" height="300" aria-label="次に落ちてくる5個のブロック"></canvas></section>
+          </aside>
+        </section>
+        <section class="touch-controls" aria-label="タッチ操作">
+          <div class="touch-secondary">
+            <button type="button" data-action="hold" aria-label="ホールド">ホールド</button>
+            <button type="button" data-action="rotate-back" aria-label="左回転">↶</button>
+            <button type="button" data-action="rotate" aria-label="右回転">↷</button>
+          </div>
+          <div class="touch-primary">
+            <button type="button" data-action="left" aria-label="左に移動">←</button>
+            <button type="button" data-action="down" aria-label="速く落とす">↓</button>
+            <button type="button" data-action="right" aria-label="右に移動">→</button>
+            <button type="button" class="touch-drop" data-action="drop" aria-label="一気に落とす">⤓</button>
+          </div>
+        </section>
+        <p id="announcer" class="sr-only" role="status" aria-live="polite"></p>
+        <noscript><p>JavaScript を有効にしてください。</p></noscript>
+      </main>
+    </div>
+    <dialog id="help-dialog" aria-labelledby="help-title">
+      <div class="dialog-heading"><h2 id="help-title">操作方法</h2><button id="close-help" class="icon-button" type="button" aria-label="閉じる">×</button></div>
+      <p>横一列をそろえて消す。上まで積み上がると終了。</p>
+      <dl class="help-keys">
+        <div><dt>← →</dt><dd>移動</dd></div>
+        <div><dt>↑ / X · Z</dt><dd>右回転 · 左回転</dd></div>
+        <div><dt>↓</dt><dd>速く落とす</dd></div>
+        <div><dt>Space</dt><dd>一気に落とす</dd></div>
+        <div><dt>C / Shift</dt><dd>ホールド（設置ごとに1回）</dd></div>
+        <div><dt>P / Esc</dt><dd>一時停止・再開</dd></div>
+        <div><dt>Enter</dt><dd>開始・再挑戦</dd></div>
+      </dl>
+      <p class="help-note">枠のブロックは着地点。10ラインでレベルアップ。</p>
+      <button id="help-done" class="primary-button" type="button">閉じる</button>
+    </dialog>
+  </body>
+</html>
