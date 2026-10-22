@@ -90,3 +90,7 @@ dialog .primary-button { width:100%; }
 }
 @media (max-width:360px) { :root { --rail:62px; --gap:10px; } }
 @media (prefers-reduced-motion:reduce) { *,*::before,*::after { animation-duration:.01ms!important; transition-duration:.01ms!important; } }
+
+/* Line breaking: avoid stray last characters */
+body{line-break:strict;text-wrap-style:pretty}
+h1,h2,h3,h4,h5,h6,button,label,summary,legend,dt,th{text-wrap-style:balance}
